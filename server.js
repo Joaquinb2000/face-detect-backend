@@ -51,4 +51,6 @@ app.put("/image", (req, res) =>{image.imageLook(req, res, db)});
 
 app.post("/API", (req, res) => {API.handleAPICall(req, res)});
 
-app.listen(4000, () =>{})
+app.listen(4000, () =>{
+  console.log ("Server started")
+})
