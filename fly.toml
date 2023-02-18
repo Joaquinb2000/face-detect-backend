@@ -1,12 +1,15 @@
-# fly.toml file generated for rough-snow-8880 on 2023-02-17T23:41:05-04:00
+# fly.toml file generated for face-detect-jb on 2023-02-18T16:24:55-04:00
 
-app = "rough-snow-8880"
+app = "face-detect-jb"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
 [env]
-  PORT = "8080"
+  PORT = 8080
+
+[deploy]
+  release_command = "npx knex migrate:latest"
 
 [experimental]
   auto_rollback = true
