@@ -12,7 +12,7 @@ const runSchema = async () =>{
             table.string('email');
             table.string('name');
             table.timestamp('joined').defaultTo(db.fn.now())
-            table.integer('entries')
+            table.integer('entries').defaultTo(0)
         })
     }
     catch(e){
