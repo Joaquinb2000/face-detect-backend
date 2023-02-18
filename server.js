@@ -1,38 +1,14 @@
 const express  = require('express');
 const bcrypt   = require('bcrypt');
 const cors     = require('cors');
-const knex     = require ('knex');
 const signin   = require("./Access/signin");
 const register = require ("./Access/register");
 const search   = require('./Access/searchID');
 const image    = require('./Access/image');
 const API      = require('./Access/APIcall') ;
+const { db }   = require('./database')
 
-const basic= {
-    box: {},
-    ImageURL: '',
-    input: '',
-    route: "signin",
-    isSignedIn: false,
-    user: {
-      email  : "",
-      id     : "",
-      name   : "",
-      entries: 0,
-      joined : "",
-    }
-}
-
-const db= knex({
-    client: 'pg',
-    connection: {
-      host     : '127.0.0.1',
-      port     : 5432,
-      user     : 'postgres',
-      password : 'l3arn1ngHW2Uz',
-      database : 'face detect'
-    }
-  });
+const port = process.env.PORT || 3000
 
 const Saltrounds= 10;
 
@@ -51,6 +27,10 @@ app.put("/image", (req, res) =>{image.imageLook(req, res, db)});
 
 app.post("/API", (req, res) => {API.handleAPICall(req, res)});
 
-app.listen(4000, () =>{
-  console.log ("Server started")
+app.listen(port, () =>{
+  console.log (`Server started on port ${port}`)
 })
+
+module.exports = {
+  db: db
+}
