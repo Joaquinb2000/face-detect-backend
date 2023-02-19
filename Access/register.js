@@ -1,18 +1,21 @@
 const handleRegister= (req, res, db, bcrypt, Saltrounds)=> {
     const {email, name, password}= req.body;
+    if(password.length < 8){
+        throw {error: "password can't be shorter than 8 characters"}
+    }
     const hashed= bcrypt.hashSync(password, Saltrounds);
     db.transaction(trx => {
         trx.insert({
             hash: hashed,
             email: email,
-        }) 
+        })
         .into('login')
         .returning('email')
         .then(loginEmail => {
             return trx('users')
             .returning('*')
                 .insert({
-                    email: loginEmail[0].email,
+                    login_email: loginEmail[0].email,
                     name: name,
                     joined: new Date()
                 })
@@ -23,7 +26,9 @@ const handleRegister= (req, res, db, bcrypt, Saltrounds)=> {
         .then(trx.commit)
         .catch(trx.rollback)
     })
-    .catch (err => res.status(400).json("REGISTER ERROR"));
+    .catch (err => {
+        return res.status(400).json({error: `REGISTER ERROR:\n ${err}`})
+    });
 }
 
 module.exports={
